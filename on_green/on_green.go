@@ -68,7 +68,7 @@ func Made(tdk string) string {
   reqUrl := "https://api-eu1.tatum.io/v3/tron/account/" + tdk
   req, _ := http.NewRequest("GET", reqUrl, nil)
   req.Header.Add("x-api-key", os.ExpandEnv("$API_GUN"))
-  var res *Request
+  var res *http.Response
   var wg sync.WaitGroup
  	wg.Add(1)
   go func() {
