@@ -13,7 +13,6 @@ import (
 	"encoding/hex"
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/btcsuite/btcutil/base58"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 )
 
