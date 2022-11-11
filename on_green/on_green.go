@@ -2,7 +2,7 @@ package on_green
 import (
 	"encoding/json"
 	"fmt"
-"os"
+	"os"
 	"io/ioutil"
 	"net/http"
 	"crypto/elliptic"
@@ -11,6 +11,7 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
+	"sync"
 	"github.com/btcsuite/btcd/btcutil/base58"
  	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -67,8 +68,15 @@ func Made(tdk string) string {
   reqUrl := "https://api-eu1.tatum.io/v3/tron/account/" + tdk
   req, _ := http.NewRequest("GET", reqUrl, nil)
   req.Header.Add("x-api-key", os.ExpandEnv("$API_GUN"))
-  res, _ := http.DefaultClient.Do(req)
-  defer res.Body.Close()
+  var res *Request
+  var wg sync.WaitGroup
+ 	wg.Add(1)
+  go func() {
+  	defer wg.Done()
+		res, _ = http.DefaultClient.Do(req)
+	}()
+	wg.Wait()
+	defer res.Body.Close()
   stuff, _ := ioutil.ReadAll(res.Body)
   var x brand 
   json.Unmarshal(stuff, &x)
