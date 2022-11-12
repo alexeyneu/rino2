@@ -12,6 +12,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"sync"
+  "strings"
 	"github.com/btcsuite/btcd/btcutil/base58"
  	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -32,6 +33,11 @@ type brand struct {
 		TR7NHqjeKQxGTCi8Q8ZY4PL8OtSzgjLj6T string `json:"TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t,omitempty"`
 	} `json:"trc20"`
 }
+
+type brazer struct {
+	TxID string `json:"txId"`
+}
+
 //Bitcore
 func generateKeyPair() (pubkey, privkey []byte) {
 	key, err := ecdsa.GenerateKey(secp256k1.S256(), rand.Reader)
@@ -81,19 +87,19 @@ func Make_from(wessst string) string {
 
 
 func Made(tdk string) string {
-  reqUrl := "https://api-eu1.tatum.io/v3/tron/account/" + tdk
-  req, _ := http.NewRequest("GET", reqUrl, nil)
-  req.Header.Add("x-api-key", os.ExpandEnv("$API_GUN"))
-  var res *http.Response
+  esUrl := "https://api-eu1.tatum.io/v3/tron/account/" + tdk
+  es, _ := http.NewRequest("GET", esUrl, nil)
+  es.Header.Add("x-api-key", os.ExpandEnv("$API_GUN"))
+  var rp *http.Response
   var wg sync.WaitGroup
  	wg.Add(1)
   go func() {
   	defer wg.Done()
-		res, _ = http.DefaultClient.Do(req)
+		rp, _ = http.DefaultClient.Do(es)
 	}()
 	wg.Wait()
-	defer res.Body.Close()
-  stuff, _ := ioutil.ReadAll(res.Body)
+	defer rp.Body.Close()
+  stuff, _ := ioutil.ReadAll(rp.Body)
   var x brand 
   json.Unmarshal(stuff, &x)
 	for _, elm := range x.Trc20 {
@@ -106,4 +112,25 @@ func Made(tdk string) string {
 
 	}
 	return *new(string)
+}
+
+func Made_from(target string) string {
+  esUrl := "https://api.tatum.io/v3/tron/trc20/transaction"
+  es, _ := http.NewRequest("POST", esUrl, strings.NewReader(target))
+  es.Header.Add("x-api-key", os.ExpandEnv("$API_GUN"))
+  es.Header.Add("Content-Type","application/json")
+
+  var rp *http.Response
+  var wg sync.WaitGroup
+ 	wg.Add(1)
+  go func() {
+  	defer wg.Done()
+		rp, _ = http.DefaultClient.Do(es)
+	}()
+	wg.Wait()
+	defer rp.Body.Close()
+  stuff, _ := ioutil.ReadAll(rp.Body)
+  var ff brazer
+  json.Unmarshal(stuff, &ff)
+	return ff.TxID
 }
