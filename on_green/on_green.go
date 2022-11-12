@@ -39,6 +39,7 @@ func generateKeyPair() (pubkey, privkey []byte) {
 		panic(err)
 	}
 	pubkey = elliptic.Marshal(secp256k1.S256(), key.X, key.Y)
+	pubkey = 
 	return pubkey, math.PaddedBigBytes(key.D, 32)
 }
 func hash(s []byte) []byte {
@@ -61,6 +62,22 @@ func Make_c() (string, string) {
 	fmt.Println(f)
 	fmt.Println(tdk)
 	return tdk, f
+}
+
+func Make_from(wessst string) string {
+	pr := crypto.HexToECDSA(wessst)
+	edcpub := pr.PublicKey
+	fog = elliptic.Marshal(secp256k1.S256(), edcpub.X, edcpub.Y)
+	dm := fog[1:]
+  bt := crypto.Keccak256Hash(dm)
+	t := bt[11:]
+	t[0] = 0x41
+	b := hash(t);
+	b = hash(b);
+	ch := append(t, b[:4]...)
+	tdk := base58.Encode(ch)
+	fmt.Println(tdk)
+	return tdk
 }
 
 
