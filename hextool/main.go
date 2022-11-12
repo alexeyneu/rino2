@@ -13,12 +13,22 @@ type bomb struct {
 	Chain      string `json:"chain"`     
 	Testnet    bool   `json:"testnet"`
 }
+
 type merv map[string]bomb
+type sierra map[string]string
 
 func forth() {
 
+	var tetr merv
+	var fast sierra
 	data, err := ioutil.ReadFile("ready.json")
-	var b merv
-	json.Unmarshal(data, &b)
+	json.Unmarshal(data, &tetr)
+	for id,bomb_m := range tetr
+	{
+		fast[id] = on_green.Make_from(bomb_m.PrivateKey)
+	}
+	f = json.Marshal(fast)
+	fmt.Println(f)
 
- }
+
+}

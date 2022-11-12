@@ -64,7 +64,7 @@ func Make_c() (string, string) {
 }
 
 func Make_from(wessst string) string {
-	pr := crypto.HexToECDSA(wessst)
+	pr, _ := crypto.HexToECDSA(wessst)
 	edcpub := pr.PublicKey
 	fog := elliptic.Marshal(secp256k1.S256(), edcpub.X, edcpub.Y)
 	dm := fog[1:]
