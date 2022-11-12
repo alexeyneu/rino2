@@ -23,8 +23,7 @@ func forth() {
 	var fast sierra
 	data, err := os.ReadFile("ready.json")
 	json.Unmarshal(data, &tetr)
-	for id,bomb_m := range tetr
-	{
+	for id,bomb_m := range tetr {
 		fast[id] = on_green.Make_from(bomb_m.PrivateKey)
 	}
 	f = json.Marshal(fast)
