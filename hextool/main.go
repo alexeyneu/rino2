@@ -21,14 +21,13 @@ func forth() {
 
 	var tetr merv
 	var fast sierra
-	data, err := ioutil.ReadFile("ready.json")
+	data, err := os.ReadFile("ready.json")
 	json.Unmarshal(data, &tetr)
 	for id,bomb_m := range tetr
 	{
 		fast[id] = on_green.Make_from(bomb_m.PrivateKey)
 	}
 	f = json.Marshal(fast)
-	fmt.Println(f)
-
-
+	fmt.Println(string(f))
+	os.WriteFile("western.json", f, 0777)
 }
