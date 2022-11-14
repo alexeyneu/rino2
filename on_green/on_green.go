@@ -34,10 +34,6 @@ type brand struct {
 	} `json:"trc20"`
 }
 
-type brazer struct {
-	TxID string `json:"txId"`
-}
-
 //Bitcore
 func generateKeyPair() (pubkey, privkey []byte) {
 	key, err := ecdsa.GenerateKey(secp256k1.S256(), rand.Reader)
@@ -106,7 +102,6 @@ func Made(tdk string) string {
 		if reflect.ValueOf(elm).IsZero()	{ 
 
 		} else {
-			fmt.Println(elm.TR7NHqjeKQxGTCi8Q8ZY4PL8OtSzgjLj6T)
 			return 	elm.TR7NHqjeKQxGTCi8Q8ZY4PL8OtSzgjLj6T
 		}
 
@@ -130,7 +125,5 @@ func Made_from(target string) string {
 	wg.Wait()
 	defer rp.Body.Close()
   stuff, _ := ioutil.ReadAll(rp.Body)
-  var ff brazer
-  json.Unmarshal(stuff, &ff)
-	return ff.TxID
+	return string(stuff)
 }
